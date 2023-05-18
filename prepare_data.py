@@ -65,3 +65,12 @@ def create_language_dicts(text_category_dictionary):
         except:
             continue
     return polish_texts, english_texts, other_texts
+
+
+def create_text_category_dictionary(train_set_ocr, train_labels_final):
+    text_category_dict = {}
+
+    for link in train_labels_final:
+        text_category_dict[train_set_ocr.get(link,0)] = train_labels_final[link]
+    
+    return text_category_dict
