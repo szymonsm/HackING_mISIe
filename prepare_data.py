@@ -11,7 +11,7 @@ def read_files():
     train_labels_final = pd.read_pickle('data/train_labels_final.pkl')
     train_set_ocr = pd.read_pickle('data/train_set_ocr.pkl')
 
-    return 
+    return id2label, label2id, submission_file, test_ids_final, test_ocr_clean, train_ids_final, train_labels_final, train_set_ocr
 
 # id2label, label2id, submission_file, test_ids_final, test_ocr_clean, train_ids_final, train_labels_final, train_set_ocr = read_files()
 
