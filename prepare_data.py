@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def read_files():
 
     id2label = pd.read_pickle('data/id2label_final.pkl')
@@ -41,3 +42,26 @@ def create_final_dict(image_text_dict, image_label_dict, id2label):
     return result_dict
 
 # train_final_dict = create_final_dict(train_image_text_dict, train_image_label_dict, id2label)
+
+import tqdm
+from langdetect import detect
+import numpy as np
+
+def create_language_dicts(text_category_dictionary):
+    categories = np.unique(list(text_category_dictionary.values()))
+    polish_texts  = {categories: 0 for categories in categories}
+    english_texts = {categories: 0 for categories in categories}
+    other_texts = {categories: 0 for categories in categories}
+
+    for key, value in tqdm(text_category_dictionary.items()):
+        try:
+            language = detect(key)
+            if language == 'pl':
+                polish_texts[value] += 1
+            elif language == 'en':
+                english_texts[value] += 1
+            else:
+                other_texts[value] += 1
+        except:
+            continue
+    return polish_texts, english_texts, other_texts
