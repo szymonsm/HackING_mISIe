@@ -65,3 +65,34 @@ def create_language_dicts(text_category_dictionary):
         except:
             continue
     return polish_texts, english_texts, other_texts
+
+
+def create_text_category_dictionary(train_set_ocr, train_labels_final):
+    text_category_dict = {}
+
+    for link in train_labels_final:
+        text_category_dict[train_set_ocr.get(link,0)] = train_labels_final[link]
+    
+    return text_category_dict
+
+# Requires columns: ID - category, Text ING - text from ING, Text Adam pl - text from Adam
+def detect_polish_from_df(df2):
+
+    categories = np.unique(df2['ID'])
+    df2['isPolish'] = 0
+    df2['isEnglish'] = 0
+    df2['isOther'] = 0
+
+    for index, row in df2.iterrows():
+        try:
+            language_ing = detect(row['Text ING'])
+            language_adam = detect(row['Text Adam pl'])
+            if language_ing == 'pl' and language_adam == 'pl':
+                df2.loc[row,'isPolish'] = 1
+            elif language_ing == 'en' or language_adam == 'en':
+                df2.loc[row,'isEnglish'] = 1
+            else:
+                df2.loc[row,'isOther'] = 1
+        except:
+            continue
+    return df2
