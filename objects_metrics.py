@@ -9,6 +9,7 @@ import os
 import tensorflow as tf
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
+from tqdm.notebook import tqdm 
 
 
 def is_empty(image: np.ndarray) -> float:
@@ -67,7 +68,9 @@ def generate_metrics(
     path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     pytesseract.pytesseract.tesseract_cmd = path_to_tesseract  # Change this path to your Tesseract executable
     data = []
-    for filepath in filepaths:
+    for filepath in tqdm(filepaths):
+        print(filepath)
+
         img = cv2.imread(filepath)
         has_table = is_table(img)
         empty_fraction = is_empty(img)
@@ -200,3 +203,4 @@ def get_filenames(folder_path):
             if file.endswith(".jpg") or file.endswith(".tiff"):
                 filenames.append(os.path.join(root, file))
     return filenames
+
